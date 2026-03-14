@@ -48,7 +48,7 @@ export default function MembersPanel({ members, tripId, currentUserId, isOwner }
     return (
         <div className="space-y-6">
             {/* Member list */}
-            <div className="glass-card overflow-hidden">
+            <div className="warm-card overflow-hidden">
                 <div className="divide-y divide-white/[0.05]">
                     {members.map((member, i) => (
                         <div key={member.user_id} className="flex items-center gap-4 px-5 py-4">
@@ -56,7 +56,7 @@ export default function MembersPanel({ members, tripId, currentUserId, isOwner }
                                 {getInitials(member.email)}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-white font-medium truncate">{member.email}</p>
+                                <p className="text-charcoal-900 font-medium truncate">{member.email}</p>
                             </div>
                             <span className={member.role === 'owner' ? 'badge-violet' : 'badge-slate'}>
                                 {member.role}
@@ -68,8 +68,8 @@ export default function MembersPanel({ members, tripId, currentUserId, isOwner }
 
             {/* Invite form */}
             {isOwner && (
-                <div className="glass-card p-5">
-                    <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                <div className="warm-card p-5">
+                    <h3 className="text-sm font-semibold text-charcoal-900 mb-4 flex items-center gap-2">
                         <UserPlus size={16} className="text-violet-400" />
                         Invite Member by Email
                     </h3>
@@ -89,7 +89,7 @@ export default function MembersPanel({ members, tripId, currentUserId, isOwner }
                             }
                         </button>
                     </form>
-                    <p className="text-xs text-slate-500 mt-2">They must already have a TripLedger account.</p>
+                    <p className="text-xs text-charcoal-500 mt-2">They must already have a TripLedger account.</p>
                 </div>
             )}
         </div>

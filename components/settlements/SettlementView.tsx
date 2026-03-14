@@ -32,7 +32,7 @@ export default function SettlementView({ tripId }: SettlementViewProps) {
                 {[1, 2, 3].map((i) => (
                     <motion.div
                         key={i}
-                        className="h-20 glass-card"
+                        className="h-20 warm-card"
                         initial={{ opacity: 0.4 }}
                         animate={{ opacity: [0.4, 0.8, 0.4] }}
                         transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.15 }}
@@ -51,8 +51,8 @@ export default function SettlementView({ tripId }: SettlementViewProps) {
                 transition={{ duration: 0.35 }}
             >
                 <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto mb-3" />
-                <p className="text-white font-semibold text-lg">All settled up!</p>
-                <p className="text-slate-400 text-sm">No expenses to settle.</p>
+                <p className="text-charcoal-900 font-semibold text-lg">All settled up!</p>
+                <p className="text-charcoal-500 text-sm">No expenses to settle.</p>
             </motion.div>
         )
     }
@@ -68,7 +68,7 @@ export default function SettlementView({ tripId }: SettlementViewProps) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35 }}
                 >
-                    <p className="text-sm text-slate-400 mb-3 font-medium">Net Balances</p>
+                    <p className="text-sm text-charcoal-500 mb-3 font-medium">Net Balances</p>
                     <div className="flex flex-wrap gap-2">
                         {balances.map((b, i) => (
                             <motion.span
@@ -80,7 +80,7 @@ export default function SettlementView({ tripId }: SettlementViewProps) {
                                     ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20'
                                     : b.netBalance < 0
                                         ? 'bg-rose-500/10 text-rose-300 border-rose-500/20'
-                                        : 'bg-slate-700/50 text-slate-300 border-slate-600/20'
+                                        : 'bg-ivory-200 text-charcoal-500 border-ivory-400'
                                     }`}
                             >
                                 {b.email.split('@')[0]}{' '}
@@ -89,9 +89,9 @@ export default function SettlementView({ tripId }: SettlementViewProps) {
                             </motion.span>
                         ))}
                     </div>
-                    <p className="text-xs text-slate-500 mt-2">
-                        Per person share:{' '}
-                        <span className="text-slate-400 font-medium">
+                    <p className="text-xs text-charcoal-400 mt-2">
+                        Positive means they are owed money. Negative means they owe money. <br />
+                        <span className="text-charcoal-500 font-medium">
                             {formatCurrency(
                                 balances.reduce((s, b) => s + b.totalShare, 0) / (balances.length || 1)
                             )}
@@ -104,7 +104,7 @@ export default function SettlementView({ tripId }: SettlementViewProps) {
             {transactions.length > 0 && (
                 <div>
                     <div className="flex items-center gap-2 mb-3">
-                        <p className="text-sm text-slate-400 font-medium">Optimized Settlements</p>
+                        <p className="text-sm text-charcoal-500 font-medium">Optimized Settlements</p>
                         <span className="badge-violet flex items-center gap-1">
                             <Zap size={10} />
                             {transactions.length} transaction{transactions.length !== 1 ? 's' : ''}
@@ -121,14 +121,14 @@ export default function SettlementView({ tripId }: SettlementViewProps) {
                                     initial={{ opacity: 0, x: -16 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: i * 0.08, duration: 0.35, ease: 'easeOut' }}
-                                    className={`glass-card p-4 flex items-center gap-4 transition-all duration-300 ${isSettled ? 'opacity-60' : ''}`}
+                                    className={`warm-card p-4 flex items-center gap-4 transition-all duration-300 ${isSettled ? 'opacity-60' : ''}`}
                                 >
                                     {/* From */}
                                     <div className="flex items-center gap-2 min-w-0">
                                         <div className={`w-9 h-9 rounded-full ${getAvatarColor(fromIdx)} flex items-center justify-center text-xs font-semibold text-white flex-shrink-0`}>
                                             {getInitials(t.fromEmail)}
                                         </div>
-                                        <span className="text-sm text-white truncate">{t.fromEmail.split('@')[0]}</span>
+                                        <span className="text-sm text-charcoal-900 font-medium truncate">{t.fromEmail.split('@')[0]}</span>
                                     </div>
 
                                     <ArrowRight className="text-violet-400 flex-shrink-0" size={18} />
@@ -138,7 +138,7 @@ export default function SettlementView({ tripId }: SettlementViewProps) {
                                         <div className={`w-9 h-9 rounded-full ${getAvatarColor(toIdx)} flex items-center justify-center text-xs font-semibold text-white flex-shrink-0`}>
                                             {getInitials(t.toEmail)}
                                         </div>
-                                        <span className="text-sm text-white truncate">{t.toEmail.split('@')[0]}</span>
+                                        <span className="text-sm text-charcoal-900 font-medium truncate">{t.toEmail.split('@')[0]}</span>
                                     </div>
 
                                     <div className="ml-auto flex items-center gap-4 flex-shrink-0">
@@ -153,7 +153,7 @@ export default function SettlementView({ tripId }: SettlementViewProps) {
                                             whileTap={{ scale: 0.95 }}
                                             className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-all duration-200 ${isSettled
                                                 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
-                                                : 'border-slate-600 text-slate-400 hover:border-emerald-500/50 hover:text-emerald-400'
+                                                : 'border-charcoal-200 text-charcoal-500 hover:border-emerald-500/50 hover:text-emerald-400'
                                                 }`}
                                         >
                                             {isSettled ? '✓ Settled' : 'Mark Settled'}
