@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { Trash2, Receipt } from 'lucide-react'
+import { motion, HTMLMotionProps } from 'framer-motion'
 import { formatCurrency, formatDate, getAvatarColor, getInitials } from '@/lib/utils'
 import toast from 'react-hot-toast'
 
@@ -26,6 +27,14 @@ interface ExpenseListProps {
     currentUserId: string
 }
 
+function rowMotionProps(i: number): HTMLMotionProps<'tr'> {
+    return {
+        initial: { opacity: 0, x: -12 },
+        animate: { opacity: 1, x: 0 },
+        transition: { delay: i * 0.06, duration: 0.35, ease: 'easeOut' },
+    }
+}
+
 export default function ExpenseList({ expenses, members, tripId, currentUserId }: ExpenseListProps) {
     const router = useRouter()
     const memberMap = new Map(members.map((m, i) => [m.user_id, { email: m.email, index: i }]))
@@ -41,12 +50,17 @@ export default function ExpenseList({ expenses, members, tripId, currentUserId }
 
     if (expenses.length === 0) {
         return (
-            <div className="text-center py-12">
+            <motion.div
+                className="text-center py-12"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35 }}
+            >
                 <div className="w-12 h-12 rounded-xl bg-slate-700/50 flex items-center justify-center mx-auto mb-4">
                     <Receipt className="w-6 h-6 text-slate-500" />
                 </div>
                 <p className="text-slate-400">No expenses yet. Add the first one!</p>
-            </div>
+            </motion.div>
         )
     }
 
@@ -65,10 +79,14 @@ export default function ExpenseList({ expenses, members, tripId, currentUserId }
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-white/[0.04]">
-                        {expenses.map((expense) => {
+                        {expenses.map((expense, i) => {
                             const payer = memberMap.get(expense.paid_by)
                             return (
-                                <tr key={expense.id} className="hover:bg-white/[0.02] transition-colors group">
+                                <motion.tr
+                                    key={expense.id}
+                                    {...rowMotionProps(i)}
+                                    className="hover:bg-white/[0.02] transition-colors group"
+                                >
                                     <td className="px-4 py-3.5">
                                         <span className="text-white font-medium">{expense.description}</span>
                                     </td>
@@ -90,14 +108,16 @@ export default function ExpenseList({ expenses, members, tripId, currentUserId }
                                     </td>
                                     <td className="px-4 py-3.5 text-slate-400 text-sm">{formatDate(expense.created_at)}</td>
                                     <td className="px-4 py-3.5">
-                                        <button
+                                        <motion.button
                                             onClick={() => deleteExpense(expense.id)}
                                             className="p-1.5 text-slate-600 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100"
+                                            whileHover={{ scale: 1.1 }}
+                                            whileTap={{ scale: 0.9 }}
                                         >
                                             <Trash2 size={14} />
-                                        </button>
+                                        </motion.button>
                                     </td>
-                                </tr>
+                                </motion.tr>
                             )
                         })}
                     </tbody>
