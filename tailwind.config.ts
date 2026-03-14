@@ -71,6 +71,8 @@ const config: Config = {
       animation: {
         'fade-in': 'fadeIn 0.25s ease-out',
         'slide-up': 'slideUp 0.3s ease-out',
+        'float': 'float 8s ease-in-out infinite',
+        'float-reverse': 'floatReverse 10s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -80,6 +82,14 @@ const config: Config = {
         slideUp: {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0) scale(1)' },
+          '50%': { transform: 'translateY(-20px) scale(1.05)' },
+        },
+        floatReverse: {
+          '0%, 100%': { transform: 'translateY(0) scale(1)' },
+          '50%': { transform: 'translateY(20px) scale(0.95)' },
         },
       },
       backgroundImage: {
