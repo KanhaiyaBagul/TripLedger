@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
-import { Plane, Receipt, TrendingUp } from 'lucide-react'
+import { Plane, Receipt } from 'lucide-react'
 import TripCard from '@/components/trips/TripCard'
 import CreateTripModal from '@/components/trips/CreateTripModal'
 import { formatCurrency } from '@/lib/utils'
@@ -57,8 +57,8 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
                 <CreateTripModal />
             </motion.div>
 
-            {/* Stats */}
-            <motion.div className="grid grid-cols-3 gap-4 mb-8" variants={containerVariants} initial="hidden" animate="visible">
+            {/* Stats — 2 real data cards only */}
+            <motion.div className="grid grid-cols-2 gap-4 mb-8" variants={containerVariants} initial="hidden" animate="visible">
                 <motion.div variants={itemVariants} className="warm-card p-5 flex items-center gap-4">
                     <div className="w-11 h-11 rounded-xl bg-gold-100 border border-gold-300 flex items-center justify-center flex-shrink-0">
                         <Plane className="w-5 h-5 text-gold-600" />
@@ -76,16 +76,6 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
                     <div>
                         <p className="text-2xl font-bold text-charcoal-900">{formatCurrency(totalExpenses)}</p>
                         <p className="text-sm text-charcoal-500">Total Expenses</p>
-                    </div>
-                </motion.div>
-
-                <motion.div variants={itemVariants} className="warm-card p-5 flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-xl bg-terra-100 border border-terra-200 flex items-center justify-center flex-shrink-0">
-                        <TrendingUp className="w-5 h-5 text-terra-400" />
-                    </div>
-                    <div>
-                        <p className="text-2xl font-bold text-charcoal-900">Active</p>
-                        <p className="text-sm text-charcoal-500">Status</p>
                     </div>
                 </motion.div>
             </motion.div>

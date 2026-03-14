@@ -108,10 +108,11 @@ export default function AddExpenseModal({ tripId, members, currentUserId }: AddE
                             transition={{ duration: 0.25, ease: 'easeOut' }}
                         >
                             <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-xl font-bold text-white">Add New Expense</h2>
+                                <h2 className="text-xl font-bold text-charcoal-900">Add New Expense</h2>
                                 <motion.button
                                     onClick={handleClose}
-                                    className="text-slate-400 hover:text-white transition-colors"
+                                    aria-label="Close modal"
+                                    className="text-charcoal-400 hover:text-charcoal-900 transition-colors p-1 rounded-lg hover:bg-ivory-200"
                                     whileHover={{ rotate: 90 }}
                                     transition={{ duration: 0.2 }}
                                 >
