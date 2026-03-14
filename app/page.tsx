@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import {
     Plane, ArrowRight, Users, Zap, Receipt,
-    CheckCircle, Github, Star,
+    CheckCircle, Star,
 } from 'lucide-react'
 import FadeIn from '@/components/ui/FadeIn'
 
@@ -35,11 +35,6 @@ const STEPS = [
     { n: '03', title: 'Settle Up', desc: 'View the optimised payment plan and mark debts as cleared.' },
 ]
 
-const MOCK_EXPENSES = [
-    { desc: 'Hotel — 3 nights', amount: '₹9,000', payer: 'Arjun', split: 3 },
-    { desc: 'Beach scooter rental', amount: '₹2,400', payer: 'Priya', split: 2 },
-    { desc: "Group dinner", amount: '₹7,000', payer: 'You', split: 3 },
-]
 
 export default function LandingPage() {
     return (
@@ -115,58 +110,6 @@ export default function LandingPage() {
                 <motion.p className="mt-8 text-xs text-charcoal-300" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
                     No credit card required · Free to use
                 </motion.p>
-
-                {/* Hero mockup */}
-                <motion.div
-                    initial={{ opacity: 0, y: 48, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.7, delay: 0.55 }}
-                    className="mt-16 w-full max-w-2xl"
-                >
-                    <div className="warm-card p-6 text-left shadow-warm-xl">
-                        {/* Trip header */}
-                        <div className="flex items-center justify-between mb-5">
-                            <div>
-                                <p className="font-bold text-charcoal-900 text-lg">Goa Trip 2026 🌊</p>
-                                <p className="text-charcoal-500 text-sm">3 members · ₹18,400 total</p>
-                            </div>
-                            <span className="badge-gold">Active</span>
-                        </div>
-                        {/* Expense rows */}
-                        <div className="space-y-2 mb-5">
-                            {MOCK_EXPENSES.map((row, i) => (
-                                <motion.div
-                                    key={i}
-                                    initial={{ opacity: 0, x: -12 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.8 + i * 0.12, duration: 0.4 }}
-                                    className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-ivory-200 border border-ivory-400"
-                                >
-                                    <div>
-                                        <p className="text-sm text-charcoal-900 font-medium">{row.desc}</p>
-                                        <p className="text-xs text-charcoal-400">Paid by {row.payer} · split {row.split} ways</p>
-                                    </div>
-                                    <span className="text-gold-600 font-semibold text-sm">{row.amount}</span>
-                                </motion.div>
-                            ))}
-                        </div>
-                        {/* Settlement preview */}
-                        <div className="border-t border-ivory-400 pt-4">
-                            <p className="text-xs text-charcoal-400 mb-2 flex items-center gap-1.5">
-                                <Zap size={11} className="text-gold-500" />
-                                Optimised — 2 transactions
-                            </p>
-                            <div className="flex items-center gap-3 flex-wrap">
-                                <div className="px-3 py-1.5 rounded-full bg-terra-100 text-terra-400 border border-terra-200 text-xs font-semibold">
-                                    Priya → Arjun  ₹1,300
-                                </div>
-                                <div className="px-3 py-1.5 rounded-full bg-sage-100 text-sage-400 border border-sage-200 text-xs font-semibold">
-                                    Priya → You  ₹1,500
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
             </section>
 
             {/* ── Features ───────────────────────────────────────────────── */}
@@ -246,22 +189,7 @@ export default function LandingPage() {
                 </FadeIn>
             </section>
 
-            {/* ── Footer ─────────────────────────────────────────────────── */}
-            <footer className="border-t border-ivory-400 py-8 px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-charcoal-400">
-                <div className="flex items-center gap-2.5">
-                    <Plane size={16} className="text-gold-500" />
-                    <span className="font-semibold text-charcoal-700">TripLedger</span>
-                    <span>·</span>
-                    <span>Smart group expense tracking</span>
-                </div>
-                <div className="flex items-center gap-6">
-                    <Link href="/auth/login" className="hover:text-charcoal-900 transition-colors">Sign In</Link>
-                    <Link href="/auth/signup" className="hover:text-charcoal-900 transition-colors">Sign Up</Link>
-                    <a href="https://github.com/KanhaiyaBagul/TripLedger" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-charcoal-900 transition-colors">
-                        <Github size={14} /> GitHub
-                    </a>
-                </div>
-            </footer>
+
         </div>
     )
 }

@@ -57,21 +57,21 @@ export default async function TripDetailPage({
     return (
         <div className="animate-fade-in">
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-sm text-slate-400 mb-6">
-                <Link href="/app/dashboard" className="hover:text-white transition-colors">Dashboard</Link>
-                <ChevronRight size={14} />
-                <span className="text-white">{trip.name}</span>
+            <nav className="flex items-center gap-2 text-sm text-charcoal-500 mb-6">
+                <Link href="/app/dashboard" className="hover:text-charcoal-900 transition-colors">Dashboard</Link>
+                <span>/</span>
+                <span className="text-charcoal-900 font-medium">{trip.name}</span>
             </nav>
 
             {/* Trip header */}
-            <div className="glass-card p-6 mb-6">
+            <div className="warm-card p-6 mb-6">
                 <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
-                        <h1 className="text-3xl font-bold text-white mb-1">{trip.name}</h1>
+                        <h1 className="text-3xl font-bold text-charcoal-900 mb-1">{trip.name}</h1>
                         {trip.description && (
-                            <p className="text-slate-400 mb-4">{trip.description}</p>
+                            <p className="text-charcoal-500 mb-4">{trip.description}</p>
                         )}
-                        <div className="flex items-center flex-wrap gap-4 text-sm text-slate-400">
+                        <div className="flex items-center flex-wrap gap-4 text-sm text-charcoal-500">
                             <span className="flex items-center gap-1.5">
                                 <Users size={14} className="text-violet-400" />
                                 {members.length} member{members.length !== 1 ? 's' : ''}
@@ -81,7 +81,7 @@ export default async function TripDetailPage({
                                 {formatCurrency(totalExpenses)} total
                             </span>
                             <span className="flex items-center gap-1.5">
-                                <Calendar size={14} className="text-slate-500" />
+                                <Calendar size={14} className="text-charcoal-400" />
                                 {formatDate(trip.created_at)}
                             </span>
                         </div>

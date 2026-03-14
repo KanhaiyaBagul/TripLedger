@@ -108,10 +108,11 @@ export default function AddExpenseModal({ tripId, members, currentUserId }: AddE
                             transition={{ duration: 0.25, ease: 'easeOut' }}
                         >
                             <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-xl font-bold text-white">Add New Expense</h2>
+                                <h2 className="text-xl font-bold text-charcoal-900">Add New Expense</h2>
                                 <motion.button
                                     onClick={handleClose}
-                                    className="text-slate-400 hover:text-white transition-colors"
+                                    aria-label="Close modal"
+                                    className="text-charcoal-400 hover:text-charcoal-900 transition-colors p-1 rounded-lg hover:bg-ivory-200"
                                     whileHover={{ rotate: 90 }}
                                     transition={{ duration: 0.2 }}
                                 >
@@ -121,7 +122,7 @@ export default function AddExpenseModal({ tripId, members, currentUserId }: AddE
 
                             <form onSubmit={handleSubmit} className="space-y-5">
                                 <div>
-                                    <label className="block text-sm text-slate-400 mb-1.5 font-medium">What was it for?</label>
+                                    <label className="block text-sm text-charcoal-500 mb-1.5 font-medium">What was it for?</label>
                                     <input
                                         required
                                         className="form-input"
@@ -132,9 +133,9 @@ export default function AddExpenseModal({ tripId, members, currentUserId }: AddE
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm text-slate-400 mb-1.5 font-medium">Amount</label>
+                                    <label className="block text-sm text-charcoal-500 mb-1.5 font-medium">Amount</label>
                                     <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium">₹</span>
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-charcoal-400 font-medium">₹</span>
                                         <input
                                             required
                                             type="number"
@@ -149,7 +150,7 @@ export default function AddExpenseModal({ tripId, members, currentUserId }: AddE
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm text-slate-400 mb-1.5 font-medium">Who paid?</label>
+                                    <label className="block text-sm text-charcoal-500 mb-1.5 font-medium">Who paid?</label>
                                     <select
                                         className="form-input"
                                         value={paidBy}
@@ -165,11 +166,11 @@ export default function AddExpenseModal({ tripId, members, currentUserId }: AddE
 
                                 <div>
                                     <div className="flex items-center justify-between mb-2">
-                                        <label className="text-sm text-slate-400 font-medium">Split between</label>
+                                        <label className="text-sm text-charcoal-500 font-medium">Split between</label>
                                         <div className="flex gap-2">
                                             <button type="button" onClick={() => setParticipants(members.map(m => m.user_id))} className="text-xs text-violet-400 hover:underline">All</button>
-                                            <span className="text-slate-600">·</span>
-                                            <button type="button" onClick={() => setParticipants([])} className="text-xs text-slate-400 hover:text-white">Clear</button>
+                                            <span className="text-charcoal-600">·</span>
+                                            <button type="button" onClick={() => setParticipants([])} className="text-xs text-charcoal-400 hover:text-charcoal-900 transition-colors">Clear</button>
                                         </div>
                                     </div>
                                     <div className="space-y-2">
@@ -184,7 +185,7 @@ export default function AddExpenseModal({ tripId, members, currentUserId }: AddE
                                                 <div className={`w-7 h-7 rounded-full ${getAvatarColor(i)} flex items-center justify-center text-xs font-semibold text-white`}>
                                                     {getInitials(m.email)}
                                                 </div>
-                                                <span className="text-sm text-white truncate">{m.email}</span>
+                                                <span className="text-sm text-charcoal-900 truncate font-medium">{m.email}</span>
                                             </label>
                                         ))}
                                     </div>
@@ -200,7 +201,7 @@ export default function AddExpenseModal({ tripId, members, currentUserId }: AddE
                                             className="overflow-hidden"
                                         >
                                             <div className="p-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10">
-                                                <p className="text-sm text-slate-400">
+                                                <p className="text-sm text-charcoal-500">
                                                     Each person pays: <span className="text-emerald-400 font-semibold text-base">{formatCurrency(perPerson)}</span>
                                                 </p>
                                             </div>

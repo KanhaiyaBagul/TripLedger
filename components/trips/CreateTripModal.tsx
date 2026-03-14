@@ -75,10 +75,11 @@ export default function CreateTripModal() {
                             transition={{ duration: 0.25, ease: 'easeOut' }}
                         >
                             <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-xl font-bold text-white">Create New Trip</h2>
+                                <h2 className="text-xl font-bold text-charcoal-900">Create New Trip</h2>
                                 <motion.button
                                     onClick={handleClose}
-                                    className="text-slate-400 hover:text-white transition-colors"
+                                    aria-label="Close modal"
+                                    className="text-charcoal-400 hover:text-charcoal-900 transition-colors p-1 rounded-lg hover:bg-ivory-200"
                                     whileHover={{ rotate: 90 }}
                                     transition={{ duration: 0.2 }}
                                 >
@@ -88,8 +89,9 @@ export default function CreateTripModal() {
 
                             <form onSubmit={handleCreate} className="space-y-4">
                                 <div>
-                                    <label className="block text-sm text-slate-400 mb-1.5 font-medium">Trip Name</label>
+                                    <label htmlFor="trip-name" className="block text-sm text-charcoal-600 mb-1.5 font-medium">Trip Name</label>
                                     <input
+                                        id="trip-name"
                                         required
                                         className="form-input"
                                         placeholder="e.g. Goa Trip 2026"
@@ -98,8 +100,9 @@ export default function CreateTripModal() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm text-slate-400 mb-1.5 font-medium">Description (optional)</label>
+                                    <label htmlFor="trip-desc" className="block text-sm text-charcoal-600 mb-1.5 font-medium">Description (optional)</label>
                                     <textarea
+                                        id="trip-desc"
                                         rows={3}
                                         className="form-input resize-none"
                                         placeholder="What's this trip about?"

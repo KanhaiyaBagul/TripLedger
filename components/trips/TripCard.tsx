@@ -56,6 +56,7 @@ export default function TripCard({ trip, currentUserId }: TripCardProps) {
                     {isOwner && (
                         <motion.button
                             onClick={handleDelete}
+                            aria-label={`Delete trip ${trip.name}`}
                             className="ml-2 p-1.5 text-charcoal-300 hover:text-terra-400 hover:bg-terra-100 rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
