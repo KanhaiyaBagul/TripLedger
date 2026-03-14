@@ -1,0 +1,393 @@
+{
+    "project_info": {
+        "name": "TripLedger",
+        "tagline": "Smart group expense tracking with optimized settlements",
+        "problem_statement": "Groups face confusion and friction when splitting shared expenses after trips or events. Manual calculation leads to errors, unfair settlements, and excessive transactions.",
+        "solution": "A web platform that allows users to track shared expenses and automatically compute optimized settlements with minimal transactions."
+    },
+    "tech_stack": {
+        "frontend": {
+            "framework": "Next.js 14 (App Router)",
+            "language": "TypeScript",
+            "styling": "Tailwind CSS",
+            "state_management": "React Context / Zustand",
+            "icons": "lucide-react",
+            "toast_notifications": "react-hot-toast",
+            "utility_libraries": "clsx, tailwind-merge"
+        },
+        "backend": {
+            "framework": "Next.js API Routes / Route Handlers",
+            "architecture": "RESTful API",
+            "validation": "Zod",
+            "authentication": "Supabase Auth (SSR Cookie-based JWT)"
+        },
+        "database": {
+            "provider": "Supabase",
+            "engine": "PostgreSQL",
+            "security": "Row Level Security (RLS)"
+        }
+    },
+    "database_schema": {
+        "extensions": [
+            "uuid-ossp"
+        ],
+        "tables": [
+            {
+                "name": "trips",
+                "description": "Stores core trip details",
+                "columns": [
+                    {
+                        "name": "id",
+                        "type": "UUID",
+                        "constraints": "PRIMARY KEY DEFAULT uuid_generate_v4()"
+                    },
+                    {
+                        "name": "name",
+                        "type": "TEXT",
+                        "constraints": "NOT NULL"
+                    },
+                    {
+                        "name": "description",
+                        "type": "TEXT",
+                        "constraints": ""
+                    },
+                    {
+                        "name": "created_by",
+                        "type": "UUID",
+                        "constraints": "NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE"
+                    },
+                    {
+                        "name": "created_at",
+                        "type": "TIMESTAMPTZ",
+                        "constraints": "NOT NULL DEFAULT NOW()"
+                    }
+                ],
+                "rls_policies": [
+                    "SELECT: Members can view their trips (USING is_trip_member(id) OR auth.uid() = created_by)",
+                    "INSERT: Authenticated users can create trips (WITH CHECK auth.uid() = created_by)",
+                    "UPDATE: Only owner can update trip (USING is_trip_owner(id))",
+                    "DELETE: Only owner can delete trip (USING is_trip_owner(id))"
+                ]
+            },
+            {
+                "name": "trip_members",
+                "description": "Associates users with trips and defines their roles",
+                "columns": [
+                    {
+                        "name": "id",
+                        "type": "UUID",
+                        "constraints": "PRIMARY KEY DEFAULT uuid_generate_v4()"
+                    },
+                    {
+                        "name": "trip_id",
+                        "type": "UUID",
+                        "constraints": "NOT NULL REFERENCES trips(id) ON DELETE CASCADE"
+                    },
+                    {
+                        "name": "user_id",
+                        "type": "UUID",
+                        "constraints": "NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE"
+                    },
+                    {
+                        "name": "role",
+                        "type": "TEXT",
+                        "constraints": "NOT NULL DEFAULT 'member' CHECK IN ('owner', 'member')"
+                    }
+                ],
+                "unique_constraints": [
+                    "UNIQUE(trip_id, user_id)"
+                ],
+                "rls_policies": [
+                    "SELECT: Members can view trip membership",
+                    "INSERT: Owner can add members",
+                    "DELETE: Owner can remove members OR user can remove themselves"
+                ]
+            },
+            {
+                "name": "expenses",
+                "description": "Records individual expenses within a trip",
+                "columns": [
+                    {
+                        "name": "id",
+                        "type": "UUID",
+                        "constraints": "PRIMARY KEY DEFAULT uuid_generate_v4()"
+                    },
+                    {
+                        "name": "trip_id",
+                        "type": "UUID",
+                        "constraints": "NOT NULL REFERENCES trips(id) ON DELETE CASCADE"
+                    },
+                    {
+                        "name": "amount",
+                        "type": "NUMERIC(12, 2)",
+                        "constraints": "NOT NULL CHECK (amount > 0)"
+                    },
+                    {
+                        "name": "paid_by",
+                        "type": "UUID",
+                        "constraints": "NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE"
+                    },
+                    {
+                        "name": "description",
+                        "type": "TEXT",
+                        "constraints": "NOT NULL"
+                    },
+                    {
+                        "name": "created_at",
+                        "type": "TIMESTAMPTZ",
+                        "constraints": "NOT NULL DEFAULT NOW()"
+                    }
+                ],
+                "rls_policies": [
+                    "SELECT: Members can view expenses",
+                    "INSERT: Members can add expenses (paid_by must be self)",
+                    "DELETE: Payer or trip owner can delete expense"
+                ]
+            },
+            {
+                "name": "expense_participants",
+                "description": "Maps which users are involved in splitting a specific expense",
+                "columns": [
+                    {
+                        "name": "id",
+                        "type": "UUID",
+                        "constraints": "PRIMARY KEY DEFAULT uuid_generate_v4()"
+                    },
+                    {
+                        "name": "expense_id",
+                        "type": "UUID",
+                        "constraints": "NOT NULL REFERENCES expenses(id) ON DELETE CASCADE"
+                    },
+                    {
+                        "name": "user_id",
+                        "type": "UUID",
+                        "constraints": "NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE"
+                    }
+                ],
+                "unique_constraints": [
+                    "UNIQUE(expense_id, user_id)"
+                ],
+                "rls_policies": [
+                    "SELECT: Members can view expense participants",
+                    "INSERT: Members can insert participants",
+                    "DELETE: Members can delete participants"
+                ]
+            },
+            {
+                "name": "settlements",
+                "description": "Records optimized debt settlements between users",
+                "columns": [
+                    {
+                        "name": "id",
+                        "type": "UUID",
+                        "constraints": "PRIMARY KEY DEFAULT uuid_generate_v4()"
+                    },
+                    {
+                        "name": "trip_id",
+                        "type": "UUID",
+                        "constraints": "NOT NULL REFERENCES trips(id) ON DELETE CASCADE"
+                    },
+                    {
+                        "name": "from_user",
+                        "type": "UUID",
+                        "constraints": "NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE"
+                    },
+                    {
+                        "name": "to_user",
+                        "type": "UUID",
+                        "constraints": "NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE"
+                    },
+                    {
+                        "name": "amount",
+                        "type": "NUMERIC(12, 2)",
+                        "constraints": "NOT NULL CHECK (amount > 0)"
+                    },
+                    {
+                        "name": "settled",
+                        "type": "BOOLEAN",
+                        "constraints": "NOT NULL DEFAULT FALSE"
+                    },
+                    {
+                        "name": "settled_at",
+                        "type": "TIMESTAMPTZ",
+                        "constraints": ""
+                    },
+                    {
+                        "name": "created_at",
+                        "type": "TIMESTAMPTZ",
+                        "constraints": "NOT NULL DEFAULT NOW()"
+                    }
+                ],
+                "rls_policies": [
+                    "SELECT: Trip members can view settlements",
+                    "INSERT: Trip members can create settlements",
+                    "UPDATE: Participants (from_user or to_user) can update settlement status"
+                ]
+            }
+        ],
+        "views": [
+            {
+                "name": "user_profiles",
+                "description": "Exposes user id and email from auth.users for invitation lookups",
+                "columns": [
+                    "id",
+                    "email"
+                ]
+            }
+        ],
+        "functions": [
+            {
+                "name": "is_trip_member(trip_id UUID)",
+                "returns": "BOOLEAN",
+                "description": "Checks if the authenticated user is a member of the given trip."
+            },
+            {
+                "name": "is_trip_owner(trip_id UUID)",
+                "returns": "BOOLEAN",
+                "description": "Checks if the authenticated user has the 'owner' role for the given trip."
+            }
+        ]
+    },
+    "backend_implementation": {
+        "middleware": {
+            "file": "middleware.ts",
+            "description": "Intercepts requests to protect routes. Redirects unauthenticated users from '/app/*' to '/auth/login', and authenticated users from '/auth/*' to '/app/dashboard'. Refreshes Supabase session cookies."
+        },
+        "supabase_clients": {
+            "server": "lib/supabase/server.ts (Handles cookie-based auth for RSCs and API routes)",
+            "client": "lib/supabase/client.ts (Handles auth for Client Components)"
+        },
+        "api_routes": [
+            {
+                "path": "/api/trips",
+                "methods": {
+                    "GET": {
+                        "description": "Fetches all trips where the user is a member.",
+                        "response": "Array of trips including member roles."
+                    },
+                    "POST": {
+                        "description": "Creates a new trip. Parses name/description via Zod. Inserts into 'trips', then inserts the creator into 'trip_members' as 'owner'.",
+                        "body_schema": "{ name: string, description?: string }"
+                    }
+                }
+            },
+            {
+                "path": "/api/trips/[id]/members",
+                "methods": {
+                    "GET": {
+                        "description": "Fetches all members for a specific trip, joining with the user_profiles view to get emails."
+                    },
+                    "POST": {
+                        "description": "Invites a user by email. Looks up user ID in user_profiles, inserts into trip_members.",
+                        "body_schema": "{ email: string }"
+                    }
+                }
+            },
+            {
+                "path": "/api/trips/[id]/expenses",
+                "methods": {
+                    "GET": {
+                        "description": "Fetches all expenses for a trip, including who paid and the participants involved."
+                    },
+                    "POST": {
+                        "description": "Creates an expense. Inserts into 'expenses', then bulk inserts into 'expense_participants' for all users involved.",
+                        "body_schema": "{ description: string, amount: number, paid_by: string, participants: string[] }"
+                    }
+                }
+            },
+            {
+                "path": "/api/trips/[id]/settlements",
+                "methods": {
+                    "GET": {
+                        "description": "Fetches pending and completed settlements for a trip."
+                    },
+                    "POST": {
+                        "description": "Calculates settlements. This endpoint acts as a trigger to compute the optimized settlement graph based on current expenses and save it to the database."
+                    }
+                }
+            }
+        ],
+        "core_logic": {
+            "settlement_algorithm": {
+                "file": "lib/settlement.ts",
+                "description": "Greedy algorithm to minimize transactions.",
+                "steps": [
+                    "1. Calculate net balance for every member: `Total Paid - Total Share`.",
+                    "2. Separate members into `debtors` (negative balance) and `creditors` (positive balance).",
+                    "3. Sort both lists by absolute amount descending.",
+                    "4. Iterate through debtors and creditors, matching the largest debtor with the largest creditor to generate a transaction.",
+                    "5. Adjust balances and repeat until all balances are near 0."
+                ]
+            }
+        }
+    },
+    "frontend_implementation": {
+        "styling": {
+            "engine": "Tailwind CSS",
+            "config": "tailwind.config.ts",
+            "globals": "app/globals.css (Defines custom utility classes for the glassmorphism design system: .glass-card, .glass-panel, custom button and input variants)",
+            "theme": "Dark navy background with violet accents, heavy use of backdrop-blur for glass effects."
+        },
+        "routing_structure": [
+            {
+                "path": "/auth/login",
+                "component": "LoginPage",
+                "description": "Authentication entry point. Renders the AuthForm."
+            },
+            {
+                "path": "/auth/signup",
+                "component": "SignupPage",
+                "description": "Registration entry point. Also renders the AuthForm."
+            },
+            {
+                "path": "/app/dashboard",
+                "component": "DashboardPage",
+                "description": "Main protected view. Shows user stats (total trips, expenses) and a grid of Trip Cards. Contains the 'New Trip' modal."
+            },
+            {
+                "path": "/app/trips/[id]",
+                "component": "TripDetailPage",
+                "description": "Dynamic route for a specific trip. Contains integrated tabs for Expenses, Members, and Settlements."
+            },
+            {
+                "path": "/app/settlements",
+                "component": "SettlementsPage",
+                "description": "Global view for all cross-trip settlements (informational)."
+            },
+            {
+                "path": "/app/profile",
+                "component": "ProfilePage",
+                "description": "Basic user profile details."
+            }
+        ],
+        "core_components": {
+            "layout": {
+                "Sidebar": "components/layout/Sidebar.tsx - Navigation drawer with links to Dashboard, Settlements, Profile, and a Logout button."
+            },
+            "auth": {
+                "AuthForm": "components/auth/AuthForm.tsx - Tabbed interface for Login/Signup using Supabase auth.signInWithPassword and signUp."
+            },
+            "trips": {
+                "CreateTripModal": "UI modal triggered from Dashboard to POST to /api/trips.",
+                "TripCard": "Visual representation of a trip on the dashboard."
+            },
+            "trip_details": {
+                "TripTabs": "components/trips/TripTabs.tsx - Client component managing state between 'Expenses', 'Members', and 'Settlements' views.",
+                "ExpenseList": "Table displaying recorded expenses.",
+                "AddExpenseModal": "Form to input description, amount, payer, and select participants to split among.",
+                "MembersList": "Displays trip participants and owner.",
+                "AddMemberModal": "Form to invite a user by email.",
+                "SettlementView": "Visual graph/list showing who owes whom."
+            }
+        },
+        "utilities": {
+            "file": "lib/utils.ts",
+            "functions": [
+                "cn(...inputs): Merges tailwind classes using clsx and tailwind-merge.",
+                "formatCurrency(amount): Formats numbers as INR (₹).",
+                "formatDate(date): Formats ISO strings into human readable dates.",
+                "getInitials(email): Extracts initials for avatars."
+            ]
+        }
+    }
+}
