@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -14,94 +14,118 @@
   }
 
   body {
-    @apply bg-navy-900 text-white font-sans antialiased;
-    background-image: radial-gradient(
-      ellipse at 50% 0%,
-      rgba(124, 58, 237, 0.08) 0%,
-      transparent 60%
-    );
+    @apply bg-ivory-100 text-charcoal-900 font-sans antialiased;
+    background-image:
+      radial-gradient(ellipse at 70% 0%, rgba(201, 168, 76, 0.08) 0%, transparent 55%),
+      radial-gradient(ellipse at 0% 100%, rgba(107, 143, 113, 0.06) 0%, transparent 50%);
+    min-height: 100vh;
   }
 
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
   }
+
   ::-webkit-scrollbar-track {
-    @apply bg-navy-900;
+    @apply bg-ivory-200;
   }
+
   ::-webkit-scrollbar-thumb {
-    @apply bg-navy-700 rounded-full;
+    @apply bg-ivory-500 rounded-full;
   }
+
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-violet-700;
+    @apply bg-gold-400;
   }
 }
 
 @layer components {
-  /* Glass card */
-  .glass-card {
-    @apply bg-navy-800 border border-white/[0.08] rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.4)];
+
+  /* ── Cards ───────────────────────────────────────────── */
+  .warm-card {
+    @apply bg-white border border-ivory-400 rounded-2xl shadow-warm-sm;
   }
 
-  /* Glass modal */
-  .glass-modal {
-    @apply bg-navy-800/90 backdrop-blur-xl border border-white/[0.1] rounded-2xl shadow-[0_24px_64px_rgba(0,0,0,0.6)];
+  .warm-card-hover {
+    @apply warm-card hover:shadow-warm-md hover:border-gold-300 transition-all duration-200;
   }
 
-  /* Primary button */
+  /* Elevated modal */
+  .warm-modal {
+    @apply bg-white/95 backdrop-blur-xl border border-ivory-400 rounded-2xl shadow-warm-xl;
+  }
+
+  /* ── Buttons ─────────────────────────────────────────── */
+
+  /* Gold primary */
   .btn-primary {
-    @apply bg-violet-600 hover:bg-violet-500 text-white font-semibold rounded-full px-6 py-2.5
-           transition-all duration-200 hover:shadow-[0_0_20px_rgba(124,58,237,0.4)]
-           focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-navy-900
-           disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-gold-500 hover:bg-gold-400 text-white font-semibold rounded-full px-6 py-2.5 shadow-warm-sm hover:shadow-gold-glow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2 focus:ring-offset-ivory-100 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
-  /* Ghost button */
+  /* Ghost */
   .btn-ghost {
-    @apply border border-violet-600 text-violet-400 hover:bg-violet-600/10 font-semibold rounded-full px-6 py-2.5
-           transition-all duration-200
-           focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-navy-900
-           disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply border border-charcoal-100 text-charcoal-700 hover:bg-ivory-300 hover:border-charcoal-300 font-semibold rounded-full px-6 py-2.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-charcoal-300 focus:ring-offset-2 focus:ring-offset-ivory-100 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
-  /* Danger button */
+  /* Danger */
   .btn-danger {
-    @apply bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded-full px-6 py-2.5
-           transition-all duration-200
-           focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 focus:ring-offset-navy-900
-           disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-terra-400 hover:bg-terra-300 text-white font-semibold rounded-full px-6 py-2.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-terra-300 focus:ring-offset-2 focus:ring-offset-ivory-100 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
-  /* Form input */
+  /* ── Inputs ──────────────────────────────────────────── */
   .form-input {
-    @apply w-full bg-navy-900 border border-white/[0.1] rounded-lg px-4 py-3 text-white placeholder-slate-500
-           focus:outline-none focus:border-violet-600 focus:ring-2 focus:ring-violet-600/30
-           transition-all duration-200;
+    @apply w-full bg-ivory-200 border border-ivory-500 rounded-xl px-4 py-3 text-charcoal-900 placeholder-charcoal-300 focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-400/20 focus:bg-white transition-all duration-200;
   }
 
-  /* Tab button */
+  /* ── Tabs ────────────────────────────────────────────── */
   .tab-btn {
-    @apply px-5 py-3 text-sm font-medium text-slate-400 border-b-2 border-transparent
-           hover:text-white transition-all duration-200 whitespace-nowrap;
-  }
-  .tab-btn.active {
-    @apply text-white border-violet-500;
+    @apply relative px-5 py-3 text-sm font-medium text-charcoal-500 border-b-2 border-transparent hover:text-charcoal-900 transition-all duration-200 whitespace-nowrap;
   }
 
-  /* Badge variants */
-  .badge-violet {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-violet-600/20 text-violet-300 border border-violet-500/30;
+  .tab-btn.active {
+    @apply text-charcoal-900 border-gold-500;
   }
+
+  /* ── Badges ──────────────────────────────────────────── */
+  .badge-gold {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gold-100 text-gold-600 border border-gold-300;
+  }
+
   .badge-slate {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-700/50 text-slate-300 border border-slate-600/30;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-ivory-300 text-charcoal-500 border border-ivory-500;
   }
+
+  .badge-sage {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sage-100 text-sage-500 border border-sage-200;
+  }
+
+  .badge-terra {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-terra-100 text-terra-400 border border-terra-200;
+  }
+
+  /* Keep old aliases so existing JSX doesn't break */
+  .badge-violet {
+    @apply badge-gold;
+  }
+
   .badge-emerald {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30;
+    @apply badge-sage;
   }
+
   .badge-rose {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30;
+    @apply badge-terra;
   }
+
   .badge-amber {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30;
+    @apply badge-gold;
+  }
+
+  /* ── Legacy glass aliases (for now) ─────────────────── */
+  .glass-card {
+    @apply warm-card;
+  }
+
+  .glass-modal {
+    @apply warm-modal;
   }
 }

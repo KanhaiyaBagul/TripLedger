@@ -39,11 +39,13 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/app/dashboard', request.url))
     }
 
-    // Redirect root to dashboard or login
+    // Redirect authenticated users from root to dashboard;
+    // unauthenticated users see the landing page at '/'
     if (pathname === '/') {
-        return NextResponse.redirect(
-            new URL(user ? '/app/dashboard' : '/auth/login', request.url)
-        )
+        if (user) {
+            return NextResponse.redirect(new URL('/app/dashboard', request.url))
+        }
+        return supabaseResponse // let the landing page render
     }
 
     return supabaseResponse

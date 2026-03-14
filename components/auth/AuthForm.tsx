@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Eye, EyeOff, Plane } from 'lucide-react'
+import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
 
@@ -21,7 +22,6 @@ export default function AuthForm() {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         setLoading(true)
-
         try {
             if (mode === 'login') {
                 const { error } = await supabase.auth.signInWithPassword({ email, password })
@@ -36,100 +36,128 @@ export default function AuthForm() {
                 setMode('login')
             }
         } catch (err: unknown) {
-            const message = err instanceof Error ? err.message : 'Something went wrong'
-            toast.error(message)
+            toast.error(err instanceof Error ? err.message : 'Something went wrong')
         } finally {
             setLoading(false)
         }
     }
 
     return (
-        <div className="w-full max-w-md animate-slide-up">
+        <motion.div
+            className="w-full max-w-md"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+        >
             {/* Brand */}
             <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-violet-600/20 border border-violet-500/30 mb-4">
-                    <Plane className="w-7 h-7 text-violet-400" />
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gold-100 border border-gold-300 mb-4">
+                    <Plane className="w-7 h-7 text-gold-600" />
                 </div>
-                <h1 className="text-3xl font-bold text-white">TripLedger</h1>
-                <p className="text-slate-400 mt-1 text-sm">Smart group expense tracking</p>
+                <h1 className="text-2xl font-extrabold text-charcoal-900 mb-1">TripLedger</h1>
+                <p className="text-charcoal-500 text-sm">
+                    {mode === 'login' ? 'Sign in to your account' : 'Create your free account'}
+                </p>
             </div>
 
             {/* Card */}
-            <div className="glass-card p-8">
-                {/* Tabs */}
-                <div className="flex mb-8 border-b border-white/[0.08]">
-                    <button
-                        onClick={() => setMode('login')}
-                        className={`tab-btn flex-1 ${mode === 'login' ? 'active' : ''}`}
-                    >
-                        Login
-                    </button>
-                    <button
-                        onClick={() => setMode('signup')}
-                        className={`tab-btn flex-1 ${mode === 'signup' ? 'active' : ''}`}
-                    >
-                        Sign Up
-                    </button>
+            <div className="warm-card p-8">
+                {/* Toggle */}
+                <div className="flex bg-ivory-200 rounded-xl p-1 mb-6">
+                    {(['login', 'signup'] as Mode[]).map((m) => (
+                        <button
+                            key={m}
+                            onClick={() => setMode(m)}
+                            className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all duration-200 ${mode === m
+                                    ? 'bg-white text-charcoal-900 shadow-warm-sm'
+                                    : 'text-charcoal-500 hover:text-charcoal-700'
+                                }`}
+                        >
+                            {m === 'login' ? 'Sign In' : 'Sign Up'}
+                        </button>
+                    ))}
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <motion.form
+                    key={mode}
+                    initial={{ opacity: 0, x: 8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.25 }}
+                    onSubmit={handleSubmit}
+                    className="space-y-4"
+                >
                     <div>
-                        <label className="block text-sm text-slate-400 mb-1.5 font-medium">
-                            Email address
-                        </label>
+                        <label className="block text-sm font-medium text-charcoal-700 mb-1.5">Email</label>
                         <input
                             type="email"
                             required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            autoComplete="email"
                             className="form-input"
                             placeholder="you@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm text-slate-400 mb-1.5 font-medium">
-                            Password
-                        </label>
+                        <label className="block text-sm font-medium text-charcoal-700 mb-1.5">Password</label>
                         <div className="relative">
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 required
-                                minLength={6}
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                                 className="form-input pr-12"
                                 placeholder="••••••••"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-charcoal-400 hover:text-charcoal-700 transition-colors p-1"
                             >
                                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
                         </div>
                     </div>
 
-                    <button
+                    <motion.button
                         type="submit"
                         disabled={loading}
-                        className="btn-primary w-full mt-2 flex items-center justify-center gap-2"
+                        className="btn-primary w-full flex items-center justify-center gap-2 mt-2"
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
                     >
                         {loading ? (
-                            <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        ) : null}
-                        {mode === 'login' ? 'Sign In' : 'Create Account'}
-                    </button>
-                </form>
+                            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        ) : mode === 'login' ? 'Sign In' : 'Create Account'}
+                    </motion.button>
+                </motion.form>
+
+                <p className="text-center text-sm text-charcoal-400 mt-5">
+                    {mode === 'login' ? (
+                        <>
+                            Don&apos;t have an account?{' '}
+                            <button onClick={() => setMode('signup')} className="text-gold-600 hover:text-gold-500 font-semibold transition-colors">
+                                Sign up free
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            Already have an account?{' '}
+                            <button onClick={() => setMode('login')} className="text-gold-600 hover:text-gold-500 font-semibold transition-colors">
+                                Sign in
+                            </button>
+                        </>
+                    )}
+                </p>
             </div>
 
-            <p className="text-center text-xs text-slate-500 mt-6">
-                By continuing, you agree to our{' '}
-                <span className="text-violet-400 cursor-pointer hover:underline">Terms</span>{' '}
-                &amp;{' '}
-                <span className="text-violet-400 cursor-pointer hover:underline">Privacy Policy</span>
+            <p className="text-center text-xs text-charcoal-400 mt-6">
+                <Link href="/" className="hover:text-charcoal-700 transition-colors">
+                    ← Back to Home
+                </Link>
             </p>
-        </div>
+        </motion.div>
     )
 }
