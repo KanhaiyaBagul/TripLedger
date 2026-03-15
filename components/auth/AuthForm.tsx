@@ -36,6 +36,7 @@ export default function AuthForm() {
     }
 
     async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault()
         setLoading(true)
         try {
             if (mode === 'login') {
