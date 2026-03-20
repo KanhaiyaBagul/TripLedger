@@ -14,6 +14,7 @@ export default function AuthForm() {
     const [mode, setMode] = useState<Mode>('login')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
     const router = useRouter()
@@ -46,6 +47,11 @@ export default function AuthForm() {
                 router.push('/app/dashboard')
                 router.refresh()
             } else if (mode === 'signup') {
+                if (password !== confirmPassword) {
+                    toast.error('Passwords do not match')
+                    setLoading(false)
+                    return
+                }
                 const { error } = await supabase.auth.signUp({ email, password })
                 if (error) throw error
                 toast.success('Account created! You can now log in.')
@@ -200,6 +206,25 @@ export default function AuthForm() {
                                     >
                                         {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                     </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {mode === 'signup' && (
+                            <div>
+                                <label htmlFor="confirmPassword" className="block text-sm font-medium text-charcoal-700 mb-1.5">Confirm Password</label>
+                                <div className="relative">
+                                    <input
+                                        id="confirmPassword"
+                                        type={showPassword ? 'text' : 'password'}
+                                        required
+                                        autoComplete="new-password"
+                                        className="form-input pr-12"
+                                        placeholder="••••••••"
+                                        minLength={6}
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                    />
                                 </div>
                             </div>
                         )}
