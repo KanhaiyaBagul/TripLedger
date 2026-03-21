@@ -44,7 +44,7 @@ const cardVariants: Variants = {
 export default function DashboardClient({ trips, totalExpenses, currentUserId }: DashboardClientProps) {
     const [searchQuery, setSearchQuery] = useState('')
 
-    const filteredTrips = trips.filter(trip => 
+    const filteredTrips = trips.filter(trip =>
         trip.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (trip.description && trip.description.toLowerCase().includes(searchQuery.toLowerCase()))
     )
@@ -59,21 +59,21 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
                 transition={{ duration: 0.45 }}
             >
                 <div>
-                    <h1 className="text-3xl font-bold text-charcoal-900">My Trips</h1>
-                    <p className="text-charcoal-500 mt-1">Manage your shared group expenses</p>
+                    <h1 className="text-3xl font-bold text-charcoal-900 dark:text-white transition-colors duration-300">My Trips</h1>
+                    <p className="text-charcoal-500 dark:text-slate-400 mt-1 transition-colors duration-300">Manage your shared group expenses</p>
                 </div>
                 <div className="flex items-center gap-3 w-full md:w-auto">
                     <div className="relative flex-grow md:w-64">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-charcoal-400" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-charcoal-400 dark:text-slate-500" />
                         <input
                             type="text"
                             placeholder="Search trips..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className={cn(
-                                "w-full pl-10 pr-4 py-2 bg-white border border-ivory-400 rounded-xl text-sm",
-                                "focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-gold-400 transition-all",
-                                "placeholder:text-charcoal-300"
+                                "w-full pl-10 pr-4 py-2 bg-white dark:bg-[#0f172a] border border-ivory-400 dark:border-white/10 rounded-xl text-sm dark:text-white transition-colors duration-300",
+                                "focus:outline-none focus:ring-2 focus:ring-gold-300 dark:focus:ring-violet-500 focus:border-gold-400 dark:focus:border-violet-500 transition-all",
+                                "placeholder:text-charcoal-300 dark:placeholder:text-slate-500"
                             )}
                         />
                     </div>
@@ -84,22 +84,22 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
             {/* Stats — 2 real data cards only */}
             <motion.div className="grid grid-cols-2 gap-4 mb-8" variants={containerVariants} initial="hidden" animate="visible">
                 <motion.div variants={itemVariants} className="warm-card p-5 flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-xl bg-gold-100 border border-gold-300 flex items-center justify-center flex-shrink-0">
-                        <Plane className="w-5 h-5 text-gold-600" />
+                    <div className="w-11 h-11 rounded-xl bg-gold-100 dark:bg-violet-500/20 border border-gold-300 dark:border-violet-500/30 flex items-center justify-center flex-shrink-0 transition-colors duration-300">
+                        <Plane className="w-5 h-5 text-gold-600 dark:text-violet-400 transition-colors duration-300" />
                     </div>
                     <div>
-                        <p className="text-2xl font-bold text-charcoal-900">{trips.length}</p>
-                        <p className="text-sm text-charcoal-500">Active Trips</p>
+                        <p className="text-2xl font-bold text-charcoal-900 dark:text-white transition-colors duration-300">{trips.length}</p>
+                        <p className="text-sm text-charcoal-500 dark:text-slate-400 transition-colors duration-300">Active Trips</p>
                     </div>
                 </motion.div>
 
                 <motion.div variants={itemVariants} className="warm-card p-5 flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-xl bg-sage-100 border border-sage-200 flex items-center justify-center flex-shrink-0">
-                        <Receipt className="w-5 h-5 text-sage-400" />
+                    <div className="w-11 h-11 rounded-xl bg-sage-100 dark:bg-emerald-500/20 border border-sage-200 dark:border-emerald-500/30 flex items-center justify-center flex-shrink-0 transition-colors duration-300">
+                        <Receipt className="w-5 h-5 text-sage-400 dark:text-emerald-400 transition-colors duration-300" />
                     </div>
                     <div>
-                        <p className="text-2xl font-bold text-charcoal-900">{formatCurrency(totalExpenses)}</p>
-                        <p className="text-sm text-charcoal-500">Total Expenses</p>
+                        <p className="text-2xl font-bold text-charcoal-900 dark:text-white transition-colors duration-300">{formatCurrency(totalExpenses)}</p>
+                        <p className="text-sm text-charcoal-500 dark:text-slate-400 transition-colors duration-300">Total Expenses</p>
                     </div>
                 </motion.div>
             </motion.div>
@@ -112,11 +112,11 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.4, delay: 0.3 }}
                 >
-                    <div className="w-16 h-16 rounded-2xl bg-gold-100 border border-gold-300 flex items-center justify-center mx-auto mb-5">
-                        <Plane className="w-8 h-8 text-gold-600" />
+                    <div className="w-16 h-16 rounded-2xl bg-gold-100 dark:bg-violet-500/20 border border-gold-300 dark:border-violet-500/30 flex items-center justify-center mx-auto mb-5 transition-colors duration-300">
+                        <Plane className="w-8 h-8 text-gold-600 dark:text-violet-400 transition-colors duration-300" />
                     </div>
-                    <h2 className="text-xl font-semibold text-charcoal-900 mb-2">No trips yet</h2>
-                    <p className="text-charcoal-500 mb-6 max-w-sm mx-auto">
+                    <h2 className="text-xl font-semibold text-charcoal-900 dark:text-white mb-2 transition-colors duration-300">No trips yet</h2>
+                    <p className="text-charcoal-500 dark:text-slate-400 mb-6 max-w-sm mx-auto transition-colors duration-300">
                         Create your first trip and invite friends to start splitting expenses fairly.
                     </p>
                     <CreateTripModal />
@@ -127,11 +127,11 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                 >
-                    <Search className="w-10 h-10 text-charcoal-200 mx-auto mb-4" />
-                    <p className="text-charcoal-500">No trips found matching &quot;{searchQuery}&quot;</p>
-                    <button 
+                    <Search className="w-10 h-10 text-charcoal-200 dark:text-slate-600 mx-auto mb-4 transition-colors duration-300" />
+                    <p className="text-charcoal-500 dark:text-slate-400 transition-colors duration-300">No trips found matching &quot;{searchQuery}&quot;</p>
+                    <button
                         onClick={() => setSearchQuery('')}
-                        className="mt-4 text-gold-600 font-medium hover:underline text-sm"
+                        className="mt-4 text-gold-600 dark:text-violet-400 font-medium hover:underline text-sm transition-colors duration-300"
                     >
                         Clear search
                     </button>
@@ -153,4 +153,3 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
         </div>
     )
 }
-
