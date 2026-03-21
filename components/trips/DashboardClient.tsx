@@ -1,11 +1,12 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import type { Variants } from 'framer-motion'
-import { Plane, Receipt } from 'lucide-react'
+import { Plane, Receipt, Search } from 'lucide-react'
 import TripCard from '@/components/trips/TripCard'
 import CreateTripModal from '@/components/trips/CreateTripModal'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, cn } from '@/lib/utils'
 
 interface Trip {
     id: string
@@ -41,11 +42,18 @@ const cardVariants: Variants = {
 }
 
 export default function DashboardClient({ trips, totalExpenses, currentUserId }: DashboardClientProps) {
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const filteredTrips = trips.filter(trip => 
+        trip.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (trip.description && trip.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    )
+
     return (
         <div>
             {/* Header */}
             <motion.div
-                className="flex items-start justify-between mb-8"
+                className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4"
                 initial={{ opacity: 0, y: -16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45 }}
@@ -54,7 +62,23 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
                     <h1 className="text-3xl font-bold text-charcoal-900">My Trips</h1>
                     <p className="text-charcoal-500 mt-1">Manage your shared group expenses</p>
                 </div>
-                <CreateTripModal />
+                <div className="flex items-center gap-3 w-full md:w-auto">
+                    <div className="relative flex-grow md:w-64">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-charcoal-400" />
+                        <input
+                            type="text"
+                            placeholder="Search trips..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className={cn(
+                                "w-full pl-10 pr-4 py-2 bg-white border border-ivory-400 rounded-xl text-sm",
+                                "focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-gold-400 transition-all",
+                                "placeholder:text-charcoal-300"
+                            )}
+                        />
+                    </div>
+                    <CreateTripModal />
+                </div>
             </motion.div>
 
             {/* Stats — 2 real data cards only */}
@@ -97,6 +121,21 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
                     </p>
                     <CreateTripModal />
                 </motion.div>
+            ) : filteredTrips.length === 0 ? (
+                <motion.div
+                    className="warm-card p-12 text-center"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                >
+                    <Search className="w-10 h-10 text-charcoal-200 mx-auto mb-4" />
+                    <p className="text-charcoal-500">No trips found matching &quot;{searchQuery}&quot;</p>
+                    <button 
+                        onClick={() => setSearchQuery('')}
+                        className="mt-4 text-gold-600 font-medium hover:underline text-sm"
+                    >
+                        Clear search
+                    </button>
+                </motion.div>
             ) : (
                 <motion.div
                     className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
@@ -104,7 +143,7 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
                     initial="hidden"
                     animate="visible"
                 >
-                    {trips.map((trip) => (
+                    {filteredTrips.map((trip) => (
                         <motion.div key={trip.id} variants={cardVariants}>
                             <TripCard trip={trip} currentUserId={currentUserId} />
                         </motion.div>
@@ -114,3 +153,4 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
         </div>
     )
 }
+
