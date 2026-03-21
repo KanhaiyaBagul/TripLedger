@@ -8,6 +8,7 @@ import AddExpenseModal from '@/components/expenses/AddExpenseModal'
 import ExpenseList from '@/components/expenses/ExpenseList'
 import MembersPanel from '@/components/trips/MembersPanel'
 import SettlementView from '@/components/settlements/SettlementView'
+import ActivityFeedPanel from '@/components/trips/ActivityFeedPanel'
 
 export default async function TripDetailPage({
     params,
@@ -53,6 +54,47 @@ export default async function TripDetailPage({
         (sum: number, e: any) => sum + Number(e.amount),
         0
     )
+
+    // Fetch settlements for the activity feed
+    const { data: settlementsList } = await supabase
+        .from('settlements')
+        .select('*')
+        .eq('trip_id', id)
+        .eq('settled', true)
+
+    // Build Activity Feed
+    const activities: any[] = []
+
+    activities.push({
+        id: `trip-created-${trip.id}`,
+        type: 'trip_created',
+        user_id: trip.created_by,
+        created_at: trip.created_at,
+    })
+
+    ;(trip.expenses || []).forEach((e: any) => {
+        activities.push({
+            id: `exp-${e.id}`,
+            type: 'expense',
+            user_id: e.paid_by,
+            amount: Number(e.amount),
+            description: e.description,
+            created_at: e.created_at,
+        })
+    })
+
+    ;(settlementsList || []).forEach((s: any) => {
+        activities.push({
+            id: `set-${s.id}`,
+            type: 'settlement',
+            user_id: s.from_user,
+            to_user_id: s.to_user,
+            amount: Number(s.amount),
+            created_at: s.settled_at || s.created_at,
+        })
+    })
+
+    activities.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
 
     return (
         <div className="animate-fade-in">
@@ -115,6 +157,7 @@ export default async function TripDetailPage({
                     />
                 }
                 settlementsTab={<SettlementView tripId={trip.id} />}
+                activitiesTab={<ActivityFeedPanel activities={activities} members={members} />}
             />
         </div>
     )
