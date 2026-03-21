@@ -7,23 +7,26 @@ interface TripTabsProps {
     expensesTab: React.ReactNode
     membersTab: React.ReactNode
     settlementsTab: React.ReactNode
+    activitiesTab: React.ReactNode
 }
 
 const TABS = [
     { key: 'expenses', label: 'Expenses' },
     { key: 'members', label: 'Members' },
     { key: 'settlements', label: 'Settlements' },
+    { key: 'activities', label: 'Activity' },
 ] as const
 
 type TabKey = typeof TABS[number]['key']
 
-export default function TripTabs({ expensesTab, membersTab, settlementsTab }: TripTabsProps) {
+export default function TripTabs({ expensesTab, membersTab, settlementsTab, activitiesTab }: TripTabsProps) {
     const [active, setActive] = useState<TabKey>('expenses')
 
     const contentMap: Record<TabKey, React.ReactNode> = {
         expenses: expensesTab,
         members: membersTab,
         settlements: settlementsTab,
+        activities: activitiesTab,
     }
 
     return (
