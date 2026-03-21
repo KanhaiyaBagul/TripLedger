@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Manrope } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
+import { ThemeProvider } from '@/components/ThemeProvider'
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -21,30 +22,32 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={manrope.variable}>
+    <html lang="en" className={manrope.variable} suppressHydrationWarning>
       <body className="font-sans">
-        {children}
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            style: {
-              background: '#FFFFFF',
-              color: '#1A1A1A',
-              border: '1px solid #E8E6DE',
-              borderRadius: '14px',
-              boxShadow: '0 4px 12px rgba(90, 70, 30, 0.1)',
-              fontFamily: 'Manrope, sans-serif',
-              fontSize: '14px',
-              fontWeight: '500',
-            },
-            success: {
-              iconTheme: { primary: '#6B8F71', secondary: '#FFFFFF' },
-            },
-            error: {
-              iconTheme: { primary: '#C4633A', secondary: '#FFFFFF' },
-            },
-          }}
-        />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              style: {
+                background: 'var(--toast-bg, #FFFFFF)',
+                color: 'var(--toast-color, #1A1A1A)',
+                border: 'var(--toast-border, 1px solid #E8E6DE)',
+                borderRadius: '14px',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                fontFamily: 'Manrope, sans-serif',
+                fontSize: '14px',
+                fontWeight: '500',
+              },
+              success: {
+                iconTheme: { primary: '#6B8F71', secondary: '#FFFFFF' },
+              },
+              error: {
+                iconTheme: { primary: '#C4633A', secondary: '#FFFFFF' },
+              },
+            }}
+          />
+        </ThemeProvider>
       </body>
     </html>
   )
