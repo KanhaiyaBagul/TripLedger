@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Edit2, X } from 'lucide-react'
+import { Edit2, X, Sun, Moon, Monitor } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import toast from 'react-hot-toast'
+import { useTheme } from 'next-themes'
 import { createClient } from '@/lib/supabase/client'
 
 type ProfileData = {
@@ -21,6 +22,7 @@ export default function EditProfileModal({ currentData }: { currentData: Profile
     const [phone, setPhone] = useState(currentData.phone || '')
     const [bio, setBio] = useState(currentData.bio || '')
     const [loading, setLoading] = useState(false)
+    const { theme, setTheme } = useTheme()
     const router = useRouter()
     const supabase = createClient()
 
@@ -132,7 +134,7 @@ export default function EditProfileModal({ currentData }: { currentData: Profile
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="bio" className="block text-sm text-charcoal-600 mb-1.5 font-medium">Bio</label>
+                                    <label htmlFor="bio" className="block text-sm text-charcoal-600 dark:text-slate-300 mb-1.5 font-medium">Bio</label>
                                     <textarea
                                         id="bio"
                                         rows={3}
@@ -142,7 +144,33 @@ export default function EditProfileModal({ currentData }: { currentData: Profile
                                         onChange={(e) => setBio(e.target.value)}
                                     />
                                 </div>
-                                <div className="flex gap-3 pt-2">
+                                <div className="pt-2">
+                                    <label className="block text-sm text-charcoal-600 dark:text-slate-300 mb-2 font-medium">Appearance</label>
+                                    <div className="flex gap-2 p-1 bg-ivory-200 dark:bg-slate-800/80 rounded-xl border border-ivory-400 dark:border-white/5">
+                                        <button
+                                            type="button"
+                                            onClick={() => setTheme('light')}
+                                            className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-all ${theme === 'light' ? 'bg-white dark:bg-slate-700 shadow-sm text-gold-600 dark:text-white' : 'text-charcoal-500 dark:text-slate-400 hover:text-charcoal-900 dark:hover:text-slate-200'}`}
+                                        >
+                                            <Sun size={15} /> Light
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setTheme('dark')}
+                                            className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-all ${theme === 'dark' ? 'bg-white dark:bg-slate-700 shadow-sm text-gold-600 dark:text-white' : 'text-charcoal-500 dark:text-slate-400 hover:text-charcoal-900 dark:hover:text-slate-200'}`}
+                                        >
+                                            <Moon size={15} /> Dark
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setTheme('system')}
+                                            className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-all ${theme === 'system' ? 'bg-white dark:bg-slate-700 shadow-sm text-gold-600 dark:text-white' : 'text-charcoal-500 dark:text-slate-400 hover:text-charcoal-900 dark:hover:text-slate-200'}`}
+                                        >
+                                            <Monitor size={15} /> System
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="flex gap-3 pt-4">
                                     <button type="button" onClick={handleClose} className="btn-ghost flex-1">
                                         Cancel
                                     </button>
