@@ -53,17 +53,17 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
         <div>
             {/* Header */}
             <motion.div
-                className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4"
+                className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 lg:mb-8 gap-4"
                 initial={{ opacity: 0, y: -16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45 }}
             >
                 <div>
-                    <h1 className="text-3xl font-bold text-charcoal-900">My Trips</h1>
-                    <p className="text-charcoal-500 mt-1">Manage your shared group expenses</p>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-charcoal-900 leading-tight">My Trips</h1>
+                    <p className="text-charcoal-500 text-sm mt-0.5">Manage your shared group expenses</p>
                 </div>
-                <div className="flex items-center gap-3 w-full md:w-auto">
-                    <div className="relative flex-grow md:w-64">
+                <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-3 w-full sm:w-auto">
+                    <div className="relative flex-grow sm:w-64">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-charcoal-400" />
                         <input
                             type="text"
@@ -71,7 +71,7 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className={cn(
-                                "w-full pl-10 pr-4 py-2 bg-white border border-ivory-400 rounded-xl text-sm",
+                                "w-full pl-10 pr-4 py-2.5 bg-white border border-ivory-400 rounded-xl text-sm",
                                 "focus:outline-none focus:ring-2 focus:ring-gold-300 focus:border-gold-400 transition-all",
                                 "placeholder:text-charcoal-300"
                             )}
@@ -82,24 +82,24 @@ export default function DashboardClient({ trips, totalExpenses, currentUserId }:
             </motion.div>
 
             {/* Stats — 2 real data cards only */}
-            <motion.div className="grid grid-cols-2 gap-4 mb-8" variants={containerVariants} initial="hidden" animate="visible">
-                <motion.div variants={itemVariants} className="warm-card p-5 flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-xl bg-gold-100 border border-gold-300 flex items-center justify-center flex-shrink-0">
+            <motion.div className="grid grid-cols-1 xs:grid-cols-2 gap-4 mb-8" variants={containerVariants} initial="hidden" animate="visible">
+                <motion.div variants={itemVariants} className="warm-card p-4 sm:p-5 flex items-center gap-4">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gold-100 border border-gold-300 flex items-center justify-center flex-shrink-0">
                         <Plane className="w-5 h-5 text-gold-600" />
                     </div>
                     <div>
-                        <p className="text-2xl font-bold text-charcoal-900">{trips.length}</p>
-                        <p className="text-sm text-charcoal-500">Active Trips</p>
+                        <p className="text-xl sm:text-2xl font-bold text-charcoal-900 leading-none">{trips.length}</p>
+                        <p className="text-xs sm:text-sm text-charcoal-500 mt-1">Active Trips</p>
                     </div>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="warm-card p-5 flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-xl bg-sage-100 border border-sage-200 flex items-center justify-center flex-shrink-0">
+                <motion.div variants={itemVariants} className="warm-card p-4 sm:p-5 flex items-center gap-4">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-sage-100 border border-sage-200 flex items-center justify-center flex-shrink-0">
                         <Receipt className="w-5 h-5 text-sage-400" />
                     </div>
                     <div>
-                        <p className="text-2xl font-bold text-charcoal-900">{formatCurrency(totalExpenses)}</p>
-                        <p className="text-sm text-charcoal-500">Total Expenses</p>
+                        <p className="text-xl sm:text-2xl font-bold text-charcoal-900 leading-none">{formatCurrency(totalExpenses)}</p>
+                        <p className="text-xs sm:text-sm text-charcoal-500 mt-1">Total Spent</p>
                     </div>
                 </motion.div>
             </motion.div>

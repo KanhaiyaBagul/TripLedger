@@ -4,9 +4,10 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Plus, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { cn } from '@/lib/utils'
 import toast from 'react-hot-toast'
 
-export default function CreateTripModal() {
+export default function CreateTripModal({ minimal = false }: { minimal?: boolean }) {
     const [open, setOpen] = useState(false)
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
@@ -46,12 +47,16 @@ export default function CreateTripModal() {
         <>
             <motion.button
                 onClick={() => setOpen(true)}
-                className="btn-primary flex items-center gap-2"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+                className={cn(
+                    "btn-primary flex items-center justify-center gap-2",
+                    minimal ? "w-12 h-12 p-0 rounded-2xl shadow-gold-glow" : ""
+                )}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Create new trip"
             >
-                <Plus size={18} />
-                New Trip
+                <Plus size={minimal ? 24 : 18} />
+                {!minimal && "New Trip"}
             </motion.button>
 
             <AnimatePresence>
@@ -68,7 +73,7 @@ export default function CreateTripModal() {
                         />
                         {/* Modal */}
                         <motion.div
-                            className="relative glass-modal w-full max-w-md p-6"
+                            className="relative warm-modal w-full max-w-md p-6 sm:p-8 m-4"
                             initial={{ opacity: 0, scale: 0.94, y: 16 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.94, y: 16 }}

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Manrope } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
@@ -9,10 +9,23 @@ const manrope = Manrope({
   weight: ['300', '400', '500', '600', '700', '800'],
 })
 
+export const viewport: Viewport = {
+  themeColor: '#FFFFFF',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+}
+
 export const metadata: Metadata = {
   title: 'TripLedger — Premium Group Expense Tracking',
   description:
     'Track shared travel expenses and automatically compute optimized settlements with minimal transactions.',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'TripLedger',
+  },
 }
 
 export default function RootLayout({

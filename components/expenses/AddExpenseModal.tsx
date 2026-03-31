@@ -101,7 +101,7 @@ export default function AddExpenseModal({ tripId, members, currentUserId }: AddE
                         />
                         {/* Modal */}
                         <motion.div
-                            className="relative glass-modal w-full max-w-md p-6 overflow-y-auto max-h-[90vh]"
+                            className="relative warm-modal w-full max-w-md p-6 sm:p-8 overflow-y-auto max-h-[90vh] m-4"
                             initial={{ opacity: 0, scale: 0.94, y: 16 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.94, y: 16 }}
@@ -167,25 +167,25 @@ export default function AddExpenseModal({ tripId, members, currentUserId }: AddE
                                 <div>
                                     <div className="flex items-center justify-between mb-2">
                                         <label className="text-sm text-charcoal-500 font-medium">Split between</label>
-                                        <div className="flex gap-2">
-                                            <button type="button" onClick={() => setParticipants(members.map(m => m.user_id))} className="text-xs text-violet-400 hover:underline">All</button>
-                                            <span className="text-charcoal-600">·</span>
-                                            <button type="button" onClick={() => setParticipants([])} className="text-xs text-charcoal-400 hover:text-charcoal-900 transition-colors">Clear</button>
+                                        <div className="flex gap-3">
+                                            <button type="button" onClick={() => setParticipants(members.map(m => m.user_id))} className="text-xs text-gold-600 font-bold hover:underline">Select All</button>
+                                            <span className="text-ivory-500">|</span>
+                                            <button type="button" onClick={() => setParticipants([])} className="text-xs text-charcoal-400 font-bold hover:text-charcoal-900 transition-colors">Clear</button>
                                         </div>
                                     </div>
                                     <div className="space-y-2">
                                         {members.map((m, i) => (
-                                            <label key={m.user_id} className="flex items-center gap-3 p-3 rounded-lg bg-navy-900/50 border border-white/[0.06] cursor-pointer hover:border-violet-500/30 transition-colors">
+                                            <label key={m.user_id} className="flex items-center gap-3 p-3 rounded-xl bg-ivory-100 border border-ivory-300 cursor-pointer hover:border-gold-400 transition-colors">
                                                 <input
                                                     type="checkbox"
                                                     checked={participants.includes(m.user_id)}
                                                     onChange={() => toggleParticipant(m.user_id)}
-                                                    className="w-4 h-4 accent-violet-600 rounded"
+                                                    className="w-4 h-4 accent-gold-600 rounded border-ivory-400"
                                                 />
-                                                <div className={`w-7 h-7 rounded-full ${getAvatarColor(i)} flex items-center justify-center text-xs font-semibold text-white`}>
+                                                <div className={`w-8 h-8 rounded-full ${getAvatarColor(i)} flex items-center justify-center text-[10px] font-bold text-white shadow-sm`}>
                                                     {getInitials(m.email)}
                                                 </div>
-                                                <span className="text-sm text-charcoal-900 truncate font-medium">{m.email}</span>
+                                                <span className="text-sm text-charcoal-900 truncate font-semibold">{m.email}</span>
                                             </label>
                                         ))}
                                     </div>
@@ -200,10 +200,9 @@ export default function AddExpenseModal({ tripId, members, currentUserId }: AddE
                                             transition={{ duration: 0.2 }}
                                             className="overflow-hidden"
                                         >
-                                            <div className="p-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10">
-                                                <p className="text-sm text-charcoal-500">
-                                                    Each person pays: <span className="text-emerald-400 font-semibold text-base">{formatCurrency(perPerson)}</span>
-                                                </p>
+                                            <div className="p-4 rounded-xl border border-sage-300 bg-sage-100 shadow-sm">
+                                                <p className="text-xs text-charcoal-500 font-bold uppercase tracking-wider mb-1">Each person owes</p>
+                                                <p className="text-2xl font-extrabold text-sage-600">{formatCurrency(perPerson)}</p>
                                             </div>
                                         </motion.div>
                                     )}
