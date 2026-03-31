@@ -7,12 +7,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import toast from 'react-hot-toast'
 
-export default function CreateTripModal({ minimal = false }: { minimal?: boolean }) {
+export default function CreateTripModal({ variant = 'primary' }: { variant?: 'primary' | 'tab' }) {
     const [open, setOpen] = useState(false)
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [loading, setLoading] = useState(false)
     const router = useRouter()
+
+    const isTab = variant === 'tab'
 
     function handleClose() {
         setOpen(false)
@@ -48,15 +50,17 @@ export default function CreateTripModal({ minimal = false }: { minimal?: boolean
             <motion.button
                 onClick={() => setOpen(true)}
                 className={cn(
-                    "btn-primary flex items-center justify-center gap-2",
-                    minimal ? "w-12 h-12 p-0 rounded-2xl shadow-gold-glow" : ""
+                    "transition-all duration-300",
+                    isTab 
+                        ? "flex flex-col items-center justify-center gap-1 text-[10px] font-bold text-charcoal-400 hover:text-gold-600" 
+                        : "btn-primary flex items-center justify-center gap-2"
                 )}
-                whileHover={{ scale: 1.05 }}
+                whileHover={isTab ? { scale: 1.1 } : { scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Create new trip"
             >
-                <Plus size={minimal ? 24 : 18} />
-                {!minimal && "New Trip"}
+                <Plus size={isTab ? 18 : 18} />
+                <span>{isTab ? 'New' : 'New Trip'}</span>
             </motion.button>
 
             <AnimatePresence>

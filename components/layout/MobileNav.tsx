@@ -14,7 +14,6 @@ const NAV_ITEMS_LEFT = [
 
 const NAV_ITEMS_RIGHT = [
     { href: '/app/profile', label: 'User', icon: User },
-    { href: '/app/settings', label: 'Settings', icon: User }, // Placeholder for now, can be adjusted
 ]
 
 export default function MobileNav() {
@@ -51,12 +50,12 @@ export default function MobileNav() {
                     )
                 })}
 
-                {/* FAB in the middle */}
-                <div className="relative -top-6 px-1">
-                    <CreateTripModal minimal />
+                {/* Integrated "New" action */}
+                <div className="flex items-center justify-center w-full h-full">
+                    <CreateTripModal variant="tab" />
                 </div>
 
-                {NAV_ITEMS_RIGHT.slice(0, 2).map(({ href, label, icon: Icon }) => {
+                {NAV_ITEMS_RIGHT.map(({ href, label, icon: Icon }) => {
                     const isActive = pathname === href
                     
                     return (
