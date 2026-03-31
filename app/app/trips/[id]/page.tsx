@@ -106,29 +106,51 @@ export default async function TripDetailPage({
             </nav>
 
             {/* Trip header */}
-            <div className="warm-card p-6 mb-6">
-                <div className="flex items-start justify-between gap-4">
+            <div className="warm-card p-5 sm:p-8 mb-6 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
+                    <Receipt size={120} className="rotate-12" />
+                </div>
+                
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6 relative z-10">
                     <div className="flex-1 min-w-0">
-                        <h1 className="text-3xl font-bold text-charcoal-900 mb-1">{trip.name}</h1>
+                        <div className="flex items-center gap-3 mb-2">
+                             <h1 className="text-2xl sm:text-4xl font-extrabold text-charcoal-900 tracking-tight">{trip.name}</h1>
+                             <span className="badge-gold hidden sm:inline-flex">Trip</span>
+                        </div>
                         {trip.description && (
-                            <p className="text-charcoal-500 mb-4">{trip.description}</p>
+                            <p className="text-charcoal-500 mb-6 text-sm sm:text-base max-w-2xl leading-relaxed">{trip.description}</p>
                         )}
-                        <div className="flex items-center flex-wrap gap-4 text-sm text-charcoal-500">
-                            <span className="flex items-center gap-1.5">
-                                <Users size={14} className="text-violet-400" />
-                                {members.length} member{members.length !== 1 ? 's' : ''}
-                            </span>
-                            <span className="flex items-center gap-1.5">
-                                <Receipt size={14} className="text-amber-400" />
-                                {formatCurrency(totalExpenses)} total
-                            </span>
-                            <span className="flex items-center gap-1.5">
-                                <Calendar size={14} className="text-charcoal-400" />
-                                {formatDate(trip.created_at)}
-                            </span>
+                        <div className="flex items-center flex-wrap gap-x-6 gap-y-3">
+                            <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 rounded-lg bg-ivory-200 flex items-center justify-center text-gold-600 shadow-sm border border-ivory-300">
+                                    <Users size={16} />
+                                </div>
+                                <div>
+                                    <p className="text-[10px] text-charcoal-400 font-bold uppercase tracking-wider">Members</p>
+                                    <p className="text-sm font-bold text-charcoal-900">{members.length}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 rounded-lg bg-ivory-200 flex items-center justify-center text-gold-600 shadow-sm border border-ivory-300">
+                                    <Receipt size={16} />
+                                </div>
+                                <div>
+                                    <p className="text-[10px] text-charcoal-400 font-bold uppercase tracking-wider">Total Spent</p>
+                                    <p className="text-sm font-bold text-gold-600">{formatCurrency(totalExpenses)}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2 hidden xs:flex">
+                                <div className="w-8 h-8 rounded-lg bg-ivory-200 flex items-center justify-center text-charcoal-400 shadow-sm border border-ivory-300">
+                                    <Calendar size={16} />
+                                </div>
+                                <div>
+                                    <p className="text-[10px] text-charcoal-400 font-bold uppercase tracking-wider">Created</p>
+                                    <p className="text-sm font-bold text-charcoal-900">{formatDate(trip.created_at)}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex items-center gap-3 flex-shrink-0">
+                    <div className="flex items-center gap-3 pt-4 sm:pt-0 border-t sm:border-t-0 border-ivory-300 sm:flex-shrink-0">
                         <AddExpenseModal
                             tripId={trip.id}
                             members={members}

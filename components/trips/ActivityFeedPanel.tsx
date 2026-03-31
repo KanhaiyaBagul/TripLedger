@@ -41,7 +41,7 @@ export default function ActivityFeedPanel({ activities, members }: ActivityFeedP
     const getMember = (id: string) => members.find((m) => m.user_id === id)
 
     return (
-        <div className="space-y-6 animate-fade-in pl-4 relative before:absolute before:inset-0 before:ml-8 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent">
+        <div className="space-y-6 animate-fade-in pl-4 relative before:absolute before:inset-0 before:ml-4 sm:before:ml-8 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-ivory-400 before:to-transparent">
             {activities.length === 0 ? (
                 <div className="text-center py-12">
                     <p className="text-charcoal-500">No activity to show yet.</p>
@@ -58,28 +58,28 @@ export default function ActivityFeedPanel({ activities, members }: ActivityFeedP
                         let content = null
 
                         if (activity.type === 'trip_created') {
-                            icon = <span className="flex items-center justify-center w-8 h-8 rounded-full bg-violet-500/20 text-violet-400 ring-2 ring-slate-900"><PlusCircle size={16} /></span>
+                            icon = <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gold-100 text-gold-600 ring-4 ring-ivory-100"><PlusCircle size={16} /></span>
                             content = (
                                 <div>
-                                    <p className="text-sm font-medium text-white">
-                                        {userName} <span className="font-normal text-charcoal-400">created the trip</span>
+                                    <p className="text-sm font-semibold text-charcoal-900">
+                                        {userName} <span className="font-medium text-charcoal-400 font-sans">created the trip</span>
                                     </p>
                                 </div>
                             )
                         } else if (activity.type === 'expense') {
-                            icon = <span className="flex items-center justify-center w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 ring-2 ring-slate-900"><Receipt size={16} /></span>
+                            icon = <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gold-100 text-gold-600 ring-4 ring-ivory-100"><Receipt size={16} /></span>
                             content = (
                                 <div>
-                                    <p className="text-sm font-medium text-white">
-                                        {userName} <span className="font-normal text-charcoal-400">added an expense</span>
+                                    <p className="text-sm font-semibold text-charcoal-900">
+                                        {userName} <span className="font-medium text-charcoal-400 font-sans">added an expense</span>
                                     </p>
-                                    <div className="mt-2 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
-                                        <div className="bg-white/10 p-1.5 rounded-md text-charcoal-300">
+                                    <div className="mt-3 inline-flex items-center gap-3 px-3 py-2 rounded-xl bg-ivory-100 border border-ivory-300">
+                                        <div className="bg-white p-1.5 rounded-lg text-gold-600 shadow-sm border border-ivory-300">
                                             <Receipt size={14} />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-charcoal-300 font-medium">{activity.description}</p>
-                                            <p className="text-sm font-bold text-amber-400">{formatCurrency(activity.amount || 0)}</p>
+                                            <p className="text-[10px] text-charcoal-400 font-bold uppercase tracking-wider">{activity.description}</p>
+                                            <p className="text-sm font-extrabold text-gold-600">{formatCurrency(activity.amount || 0)}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -88,13 +88,13 @@ export default function ActivityFeedPanel({ activities, members }: ActivityFeedP
                             const toUser = getMember(activity.to_user_id || '')
                             const toUserName = toUser?.email?.split('@')[0] || 'Unknown User'
                             
-                            icon = <span className="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 ring-2 ring-slate-900"><CheckCircle2 size={16} /></span>
+                            icon = <span className="flex items-center justify-center w-8 h-8 rounded-full bg-sage-100 text-sage-600 ring-4 ring-ivory-100"><CheckCircle2 size={16} /></span>
                             content = (
                                 <div>
-                                    <p className="text-sm font-medium text-white">
-                                        {userName} <span className="font-normal text-charcoal-400">settled up with</span> {toUserName}
+                                    <p className="text-sm font-semibold text-charcoal-900">
+                                        {userName} <span className="font-medium text-charcoal-400 font-sans">settled up with</span> {toUserName}
                                     </p>
-                                    <p className="mt-1 text-sm font-bold text-emerald-400">
+                                    <p className="mt-1 text-sm font-bold text-sage-600">
                                         {formatCurrency(activity.amount || 0)} paid
                                     </p>
                                 </div>
@@ -122,11 +122,11 @@ export default function ActivityFeedPanel({ activities, members }: ActivityFeedP
                                 </div>
 
                                 {/* Right side - Content */}
-                                <div className="pl-6 md:pl-8 flex-1 pb-2">
-                                    <div className="md:hidden text-xs text-charcoal-500 mb-1">
+                                <div className="pl-8 sm:pl-12 flex-1 pb-2">
+                                    <div className="md:hidden text-[10px] text-charcoal-400 font-bold uppercase tracking-wider mb-1">
                                         {formatTimeAgo(activity.created_at)}
                                     </div>
-                                    <div className="warm-card p-4 hover:border-white/15 transition-colors">
+                                    <div className="warm-card p-4 hover:border-gold-300 transition-colors">
                                         {content}
                                     </div>
                                 </div>

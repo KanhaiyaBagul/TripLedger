@@ -37,7 +37,7 @@ export default function Sidebar({ userEmail }: SidebarProps) {
     }
 
     return (
-        <aside className="w-60 flex-shrink-0 h-screen sticky top-0 flex flex-col bg-white border-r border-ivory-400">
+        <aside className="hidden lg:flex w-60 flex-shrink-0 h-screen sticky top-0 flex-col bg-white border-r border-ivory-400">
             {/* Logo */}
             <div className="px-6 py-6 border-b border-ivory-400">
                 <Link href="/app/dashboard" className="flex items-center gap-3 group">

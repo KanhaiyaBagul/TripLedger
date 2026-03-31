@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { UserPlus, Trash2 } from 'lucide-react'
-import { getAvatarColor, getInitials } from '@/lib/utils'
+import { getAvatarColor, getInitials, cn } from '@/lib/utils'
 import toast from 'react-hot-toast'
 
 interface Member {
@@ -49,16 +49,20 @@ export default function MembersPanel({ members, tripId, currentUserId, isOwner }
         <div className="space-y-6">
             {/* Member list */}
             <div className="warm-card overflow-hidden">
-                <div className="divide-y divide-white/[0.05]">
+                <div className="divide-y divide-ivory-300">
                     {members.map((member, i) => (
                         <div key={member.user_id} className="flex items-center gap-4 px-5 py-4">
-                            <div className={`w-9 h-9 rounded-full ${getAvatarColor(i)} flex items-center justify-center text-sm font-semibold text-white flex-shrink-0`}>
+                            <div className={`w-9 h-9 rounded-full ${getAvatarColor(i)} flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 shadow-sm`}>
                                 {getInitials(member.email)}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-charcoal-900 font-medium truncate">{member.email}</p>
+                                <p className="text-charcoal-900 font-semibold truncate">{member.email}</p>
+                                <p className="text-[10px] text-charcoal-400 font-bold uppercase tracking-wider md:hidden">{member.role}</p>
                             </div>
-                            <span className={member.role === 'owner' ? 'badge-violet' : 'badge-slate'}>
+                            <span className={cn(
+                                "hidden md:inline-flex",
+                                member.role === 'owner' ? 'badge-gold' : 'badge-slate'
+                            )}>
                                 {member.role}
                             </span>
                         </div>
@@ -73,7 +77,7 @@ export default function MembersPanel({ members, tripId, currentUserId, isOwner }
                         <UserPlus size={16} className="text-violet-400" />
                         Invite Member by Email
                     </h3>
-                    <form onSubmit={inviteMember} className="flex gap-3">
+                    <form onSubmit={inviteMember} className="flex flex-col xs:flex-row gap-3">
                         <input
                             type="email"
                             required
@@ -82,7 +86,7 @@ export default function MembersPanel({ members, tripId, currentUserId, isOwner }
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                        <button type="submit" disabled={loading} className="btn-primary whitespace-nowrap">
+                        <button type="submit" disabled={loading} className="btn-primary whitespace-nowrap justify-center flex">
                             {loading
                                 ? <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                                 : 'Send Invite'

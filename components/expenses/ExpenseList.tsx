@@ -56,8 +56,8 @@ export default function ExpenseList({ expenses, members, tripId, currentUserId }
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35 }}
             >
-                <div className="w-12 h-12 rounded-xl bg-slate-700/50 flex items-center justify-center mx-auto mb-4">
-                    <Receipt className="w-6 h-6 text-charcoal-400" />
+                <div className="w-12 h-12 rounded-xl bg-ivory-200 flex items-center justify-center mx-auto mb-4 border border-ivory-400">
+                    <Receipt className="w-6 h-6 text-charcoal-300" />
                 </div>
                 <p className="text-charcoal-500">No expenses yet. Add the first one!</p>
             </motion.div>
@@ -65,56 +65,57 @@ export default function ExpenseList({ expenses, members, tripId, currentUserId }
     }
 
     return (
-        <div>
-            <div className="overflow-hidden rounded-xl border border-white/[0.08]">
+        <div className="space-y-4">
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-hidden rounded-2xl border border-ivory-400 bg-white shadow-warm-sm">
                 <table className="w-full">
                     <thead>
-                        <tr className="border-b border-white/[0.08] bg-navy-900/50">
-                            <th className="text-left px-4 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wide">Description</th>
-                            <th className="text-right px-4 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wide">Amount</th>
-                            <th className="text-left px-4 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wide">Paid By</th>
-                            <th className="text-center px-4 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wide">Split</th>
-                            <th className="text-left px-4 py-3 text-xs font-semibold text-charcoal-500 uppercase tracking-wide">Date</th>
-                            <th className="px-4 py-3" />
+                        <tr className="border-b border-ivory-400 bg-ivory-100/50">
+                            <th className="text-left px-5 py-4 text-xs font-bold text-charcoal-500 uppercase tracking-wider">Description</th>
+                            <th className="text-right px-5 py-4 text-xs font-bold text-charcoal-500 uppercase tracking-wider">Amount</th>
+                            <th className="text-left px-5 py-4 text-xs font-bold text-charcoal-500 uppercase tracking-wider">Paid By</th>
+                            <th className="text-center px-5 py-4 text-xs font-bold text-charcoal-500 uppercase tracking-wider">Split</th>
+                            <th className="text-left px-5 py-4 text-xs font-bold text-charcoal-500 uppercase tracking-wider">Date</th>
+                            <th className="px-5 py-4" />
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/[0.04]">
+                    <tbody className="divide-y divide-ivory-300">
                         {expenses.map((expense, i) => {
                             const payer = memberMap.get(expense.paid_by)
                             return (
                                 <motion.tr
                                     key={expense.id}
                                     {...rowMotionProps(i)}
-                                    className="hover:bg-white/[0.02] transition-colors group"
+                                    className="hover:bg-ivory-100/30 transition-colors group"
                                 >
-                                    <td className="px-4 py-3.5">
-                                        <span className="text-charcoal-900 font-medium">{expense.description}</span>
+                                    <td className="px-5 py-4">
+                                        <span className="text-charcoal-900 font-semibold">{expense.description}</span>
                                     </td>
-                                    <td className="px-4 py-3.5 text-right">
-                                        <span className="text-amber-400 font-semibold">{formatCurrency(Number(expense.amount))}</span>
+                                    <td className="px-5 py-4 text-right">
+                                        <span className="text-gold-600 font-bold">{formatCurrency(Number(expense.amount))}</span>
                                     </td>
-                                    <td className="px-4 py-3.5">
+                                    <td className="px-5 py-4">
                                         {payer && (
                                             <div className="flex items-center gap-2">
-                                                <div className={`w-7 h-7 rounded-full ${getAvatarColor(payer.index)} flex items-center justify-center text-xs font-semibold text-white`}>
+                                                <div className={`w-8 h-8 rounded-full ${getAvatarColor(payer.index)} flex items-center justify-center text-[10px] font-bold text-white shadow-sm`}>
                                                     {getInitials(payer.email)}
                                                 </div>
-                                                <span className="text-charcoal-500 text-sm truncate max-w-[120px]">{payer.email.split('@')[0]}</span>
+                                                <span className="text-charcoal-600 text-sm font-medium truncate max-w-[120px]">{payer.email.split('@')[0]}</span>
                                             </div>
                                         )}
                                     </td>
-                                    <td className="px-4 py-3.5 text-center">
-                                        <span className="badge-slate">{expense.expense_participants.length}</span>
+                                    <td className="px-5 py-4 text-center">
+                                        <span className="badge-slate font-bold">{expense.expense_participants.length}</span>
                                     </td>
-                                    <td className="px-4 py-3.5 text-charcoal-500 text-sm">{formatDate(expense.created_at)}</td>
-                                    <td className="px-4 py-3.5">
+                                    <td className="px-5 py-4 text-charcoal-400 text-sm font-medium">{formatDate(expense.created_at)}</td>
+                                    <td className="px-5 py-4">
                                         <motion.button
                                             onClick={() => deleteExpense(expense.id)}
-                                            className="p-1.5 text-charcoal-400 hover:text-rose-600 hover:bg-rose-100/50 rounded-lg transition-all duration-200 opacity-0 group-hover:opacity-100"
+                                            className="p-2 text-charcoal-300 hover:text-terra-500 hover:bg-terra-100 rounded-xl transition-all duration-200 opacity-0 group-hover:opacity-100"
                                             whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.9 }}
                                         >
-                                            <Trash2 size={14} />
+                                            <Trash2 size={16} />
                                         </motion.button>
                                     </td>
                                 </motion.tr>
@@ -122,14 +123,69 @@ export default function ExpenseList({ expenses, members, tripId, currentUserId }
                         })}
                     </tbody>
                     <tfoot>
-                        <tr className="border-t border-white/[0.08] bg-navy-900/50">
-                            <td colSpan={4} className="px-4 py-3 text-sm text-charcoal-500 font-medium">Total</td>
-                            <td colSpan={2} className="px-4 py-3 text-right">
-                                <span className="text-charcoal-900 font-bold text-lg">{formatCurrency(total)}</span>
+                        <tr className="border-t border-ivory-400 bg-ivory-100/50">
+                            <td colSpan={4} className="px-5 py-4 text-sm text-charcoal-500 font-bold">Total Trip Expenses</td>
+                            <td colSpan={2} className="px-5 py-4 text-right">
+                                <span className="text-charcoal-900 font-extrabold text-xl">{formatCurrency(total)}</span>
                             </td>
                         </tr>
                     </tfoot>
                 </table>
+            </div>
+
+            {/* Mobile Card List */}
+            <div className="md:hidden space-y-4">
+                {expenses.map((expense, i) => {
+                    const payer = memberMap.get(expense.paid_by)
+                    return (
+                        <motion.div
+                            key={expense.id}
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.05 }}
+                            className="warm-card p-4 relative"
+                        >
+                            <div className="flex items-start justify-between mb-4">
+                                <div>
+                                    <h4 className="font-bold text-charcoal-900 text-lg leading-tight">{expense.description}</h4>
+                                    <p className="text-xs text-charcoal-400 font-medium mt-1 uppercase tracking-wider">{formatDate(expense.created_at)}</p>
+                                </div>
+                                <div className="text-right">
+                                    <p className="text-xl font-extrabold text-gold-600 leading-tight">{formatCurrency(Number(expense.amount))}</p>
+                                    <span className="badge-slate mt-1.5 font-bold">{expense.expense_participants.length} split</span>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-4 border-t border-ivory-300">
+                                <div className="flex items-center gap-2.5">
+                                    {payer && (
+                                        <>
+                                            <div className={`w-9 h-9 rounded-full ${getAvatarColor(payer.index)} flex items-center justify-center text-[10px] font-bold text-white shadow-sm`}>
+                                                {getInitials(payer.email)}
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] text-charcoal-400 font-bold uppercase tracking-wider">Paid by</p>
+                                                <p className="text-sm font-semibold text-charcoal-900">{payer.email.split('@')[0]}</p>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                                <button
+                                    onClick={() => deleteExpense(expense.id)}
+                                    className="p-2.5 text-terra-400 hover:bg-terra-100 rounded-xl transition-colors active:scale-95"
+                                >
+                                    <Trash2 size={18} />
+                                </button>
+                            </div>
+                        </motion.div>
+                    )
+                })}
+                
+                {/* Mobile Total */}
+                <div className="warm-card p-5 bg-ivory-200/50 border-dashed flex items-center justify-between">
+                    <span className="text-charcoal-500 font-bold uppercase tracking-widest text-xs">Total Expenses</span>
+                    <span className="text-2xl font-extrabold text-charcoal-900">{formatCurrency(total)}</span>
+                </div>
             </div>
         </div>
     )
