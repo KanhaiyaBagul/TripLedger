@@ -1,17 +1,26 @@
 {
-  "name": "TripLedger",
+  "name": "TripLedger — Premium Group Expense Tracking",
   "short_name": "TripLedger",
-  "description": "Premium Group Expense Tracking",
-  "start_url": "/",
+  "description": "Track and settle group travel expenses with elegance and optimized transactions.",
+  "start_url": "/app/dashboard",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "orientation": "portrait",
+  "background_color": "#FAFAF7",
+  "theme_color": "#C9A84C",
   "icons": [
     {
       "src": "/icon.svg",
       "sizes": "192x192 512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "travel"],
+  "shortcuts": [
+    {
+      "name": "New Trip",
+      "url": "/app/dashboard?action=new",
+      "description": "Create a new trip instantly"
     }
   ]
 }
